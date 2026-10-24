@@ -1,0 +1,77 @@
+# FarmOS production-style stack. Usage: cp backend/.env.production.example backend/.env.production, fill secrets, then
+#   docker compose up -d --build
+#   docker compose exec api php artisan migrate --force
+x-api: &api
+  build: ./backend
+  env_file: ./backend/.env.production
+  depends_on:
+    postgres: { condition: service_healthy }
+    redis: { condition: service_started }
+  volumes:
+    - storage:/app/storage/app
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: farmos
+      POSTGRES_USER: farmos
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U farmos"]
+      interval: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data
+    restart: unless-stopped
+
+  api:
+    <<: *api
+
+  queue:
+    <<: *api
+    command: ["php", "artisan", "queue:work", "--sleep=1", "--tries=3", "--max-time=3600"]
+
+  scheduler:
+    <<: *api
+    command: ["php", "artisan", "schedule:work"]
+
+  reverb:
+    <<: *api
+    command: ["php", "artisan", "reverb:start", "--host=0.0.0.0", "--port=8080"]
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        VITE_REVERB_APP_KEY: ${REVERB_APP_KEY:-}
+        VITE_REVERB_HOST: ${APP_HOST:-localhost}
+    ports:
+      - "${WEB_PORT:-80}:80"
+    depends_on: [api, reverb]
+    restart: unless-stopped
+
+  # Nightly compressed database dump, 14 days kept. See docs/OPERATIONS.md for restore.
+  backup:
+    image: postgres:17-alpine
+    environment:
+      PGPASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./backups:/backups
+    entrypoint: ["sh", "-c", "while true; do pg_dump -h postgres -U farmos -Fc farmos > /backups/farmos-$$(date +%F).dump && find /backups -name '*.dump' -mtime +14 -delete; sleep 86400; done"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+  storage:

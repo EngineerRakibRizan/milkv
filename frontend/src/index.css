@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", "Hind Siliguri", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-brand-50: #f0fdf4;
+  --color-brand-100: #dcfce7;
+  --color-brand-500: #22c55e;
+  --color-brand-600: #16a34a;
+  --color-brand-700: #15803d;
+  --color-brand-800: #166534;
+  --color-brand-900: #14532d;
+
+  --color-surface: var(--surface);
+  --color-canvas: var(--canvas);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+}
+
+:root {
+  --canvas: #f8fafc;
+  --surface: #ffffff;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  color-scheme: light;
+}
+
+.dark {
+  --canvas: #0b1120;
+  --surface: #111827;
+  --ink: #e5e7eb;
+  --muted: #94a3b8;
+  --line: #1f2937;
+  color-scheme: dark;
+}
+
+html, body, #root { height: 100%; }
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Numeric inputs: no spinners, tabular digits everywhere numbers line up. */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Design-system primitives (Tailwind v4 @utility so they compose with @apply). */
+@utility card { @apply rounded-xl border border-line bg-surface shadow-[0_1px_2px_rgba(15,23,42,0.04)]; }
+@utility input {
+    @apply w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink outline-none
+      placeholder:text-muted focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 disabled:opacity-60;
+  }
+@utility label { @apply mb-1 block text-xs font-medium text-muted; }
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium transition
+      disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600/40;
+  }
+@utility btn-primary { @apply btn bg-brand-800 text-white hover:bg-brand-900; }
+@utility btn-secondary { @apply btn border border-line bg-surface text-ink hover:bg-canvas; }
+@utility btn-ghost { @apply btn text-muted hover:bg-canvas hover:text-ink; }
+@utility btn-danger { @apply btn bg-red-600 text-white hover:bg-red-700; }
+@utility th { @apply px-4 py-2.5 text-left text-xs font-medium uppercase tracking-wide text-muted; }
+@utility td { @apply px-4 py-3 text-sm; }
