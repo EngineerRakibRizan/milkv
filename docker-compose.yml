@@ -10,6 +10,10 @@ x-api: &api
   volumes:
     - storage:/app/storage/app
   restart: unless-stopped
+  # The FrankenPHP base image probes Caddy's admin port, which php-server mode
+  # doesn't open; workers have no HTTP server at all. The api service checks /up.
+  healthcheck:
+    disable: true
 
 services:
   postgres:
@@ -35,6 +39,11 @@ services:
 
   api:
     <<: *api
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://127.0.0.1:8000/up"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   queue:
     <<: *api

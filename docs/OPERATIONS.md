@@ -1,5 +1,23 @@
 # FarmOS — Operations
 
+## Live server: auradairy.com
+
+| | |
+|---|---|
+| Server | Ubuntu 24.04 VPS `89.116.122.146`, shared with other sites |
+| App | `/opt/farmos`, Docker Compose project `farmos`, bound to `127.0.0.1:8090` |
+| HTTPS | Host **Caddy**, configured in its own file `/etc/caddy/sites/auradairy.caddy`. Certificates renew automatically. |
+| Secrets | `/opt/farmos/.env` and `/opt/farmos/backend/.env.production`. Root-only, generated on the server, never in git. |
+| Sign-up | Closed. Accounts come from the owner via **Users & roles**. |
+
+**Update to the latest commit:** `./scripts/deploy.sh`
+
+**Useful commands on the server** (run them in `/opt/farmos`):
+- `docker compose ps`: check status
+- `docker compose logs -f api`: follow the API logs
+- `docker compose exec api php artisan farmos:create-owner <email>`: create the first owner account
+- `docker compose exec api php artisan farmos:backup 1 --output=/tmp/x.farmos.zip`: make a one-off backup file
+
 ## Deploying with Docker Compose
 
 ```bash
