@@ -1,38 +1,53 @@
-// FarmOS service worker: caches the app shell so repeat visits start instantly
-// and the app opens offline. API responses are never cached here; data is
-// cached by TanStack Query in IndexedDB and synced through the outbox.
-const SHELL = 'farmos-shell-v1'
+// FarmOS service worker: makes the app installable and lets it open instantly,
+// even offline. API responses are never cached here; data lives in
+// TanStack Query's IndexedDB cache and writes go through the offline outbox.
+const VERSION = 'v2'
+const SHELL = `farmos-shell-${VERSION}`
+const FONTS = `farmos-fonts-${VERSION}`
+const PRECACHE = ['/', '/favicon.svg', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png']
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(SHELL).then((c) => c.addAll(['/', '/favicon.svg', '/manifest.webmanifest'])))
+  e.waitUntil(caches.open(SHELL).then((c) => c.addAll(PRECACHE)))
   self.skipWaiting()
 })
 
 self.addEventListener('activate', (e) => {
-  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== SHELL).map((k) => caches.delete(k)))))
+  const keep = [SHELL, FONTS]
+  e.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((k) => !keep.includes(k)).map((k) => caches.delete(k)))))
   self.clients.claim()
 })
 
-self.addEventListener('fetch', (e) => {
-  const url = new URL(e.request.url)
-  if (e.request.method !== 'GET' || url.origin !== location.origin || url.pathname.startsWith('/api') || url.pathname.startsWith('/broadcasting')) return
+const put = (cache, req, res) => { if (res.ok) caches.open(cache).then((c) => c.put(req, res.clone())); return res }
 
-  // Navigations: network first, fall back to the cached shell when offline.
-  if (e.request.mode === 'navigate') {
-    e.respondWith(fetch(e.request).then((r) => {
-      const copy = r.clone()
-      caches.open(SHELL).then((c) => c.put('/', copy))
-      return r
-    }).catch(() => caches.match('/')))
+self.addEventListener('fetch', (e) => {
+  const req = e.request
+  if (req.method !== 'GET') return
+  const url = new URL(req.url)
+
+  // Google Fonts (Bangla typeface): cache first, so text renders offline too.
+  if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
+    e.respondWith(caches.match(req).then((hit) => hit || fetch(req).then((r) => put(FONTS, req, r))))
+    return
+  }
+  if (url.origin !== location.origin || url.pathname.startsWith('/api') || url.pathname.startsWith('/app/') || url.pathname.startsWith('/broadcasting')) return
+
+  // Page loads: network first (always the latest version), cached shell when offline.
+  if (req.mode === 'navigate') {
+    e.respondWith(fetch(req).then((r) => put(SHELL, '/', r)).catch(() => caches.match('/')))
     return
   }
 
-  // Hashed build assets are immutable: cache first.
+  // Hashed build assets never change: cache first.
   if (url.pathname.startsWith('/assets/')) {
-    e.respondWith(caches.match(e.request).then((hit) => hit || fetch(e.request).then((r) => {
-      const copy = r.clone()
-      caches.open(SHELL).then((c) => c.put(e.request, copy))
-      return r
-    })))
+    e.respondWith(caches.match(req).then((hit) => hit || fetch(req).then((r) => put(SHELL, req, r))))
+    return
+  }
+
+  // Icons and manifest: serve cached, refresh in the background.
+  if (url.pathname.startsWith('/icons/') || url.pathname === '/manifest.webmanifest' || url.pathname === '/favicon.svg') {
+    e.respondWith(caches.match(req).then((hit) => {
+      const net = fetch(req).then((r) => put(SHELL, req, r)).catch(() => hit)
+      return hit || net
+    }))
   }
 })

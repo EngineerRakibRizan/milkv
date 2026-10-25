@@ -12,6 +12,7 @@ import { onOutboxChange, flushOutbox } from '@/lib/outbox'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui'
 import { QuickAdd } from './QuickAdd'
+import { InstallAppButton } from './InstallApp'
 import { CowIcon } from './icons'
 
 type NavItem = { to: string; label: string; icon: ComponentType<{ className?: string }>; ability: string }
@@ -190,6 +191,7 @@ export function AppShell() {
                 {!!unread.data?.unread && <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-600 ring-2 ring-surface" />}
               </NavLink>
             )}
+            <InstallAppButton />
             <QuickAdd trigger={<><Plus className="h-4 w-4" /><span className="hidden sm:inline">{t('common.quickAdd')}</span></>} />
           </div>
         </header>

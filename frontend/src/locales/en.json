@@ -801,5 +801,16 @@
     "repeatPassword": "Repeat new password",
     "passwordHint": "At least 8 characters. Other devices will be signed out.",
     "passwordChanged": "Password changed"
+  },
+  "pwa": {
+    "install": "Install app",
+    "howTo": "How to install",
+    "cardTitle": "Use Aura Dairy like an app",
+    "cardText": "Install it on your phone's home screen: it opens full-screen, starts instantly and works without internet.",
+    "installedText": "Installed — open it from your home screen.",
+    "ios1": "Tap the Share button at the bottom of Safari.",
+    "ios2": "Scroll down and tap “Add to Home Screen”.",
+    "ios3": "Tap “Add” — the Aura Dairy icon appears on your home screen.",
+    "android": "Open the ⋮ menu in Chrome and tap “Install app” (or “Add to Home screen”)."
   }
 }

@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import './index.css'
 import './lib/i18n'
+import './lib/pwa' // capture the install prompt as early as possible
 import { persister, queryClient } from './lib/queryClient'
 import { AuthProvider } from './lib/auth'
 import App from './App'

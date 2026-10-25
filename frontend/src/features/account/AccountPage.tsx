@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/auth'
 import { useApiMutation } from '@/hooks/useApiMutation'
 import { useForm } from '@/hooks/useForm'
 import { Card, Input, PageHeader, Spinner } from '@/components/ui'
+import { InstallAppCard } from '@/components/layout/InstallApp'
 
 /** Your own login: name, email and password. */
 export default function AccountPage() {
@@ -27,6 +28,7 @@ export default function AccountPage() {
   return (
     <>
       <PageHeader title={t('account.title')} subtitle={farm ? `${farm.name} · ${t(`roles.${farm.role}`)}` : undefined} />
+      <div className="mb-4 max-w-4xl"><InstallAppCard /></div>
       <div className="grid max-w-4xl gap-4 lg:grid-cols-2">
         <Card title={<span className="flex items-center gap-2"><UserRound className="h-4 w-4 text-brand-700" />{t('account.profile')}</span>}>
           <form className="space-y-3 p-4" noValidate onSubmit={(e) => {
