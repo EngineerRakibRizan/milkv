@@ -582,7 +582,8 @@
     "tempPw": "Share this temporary password with the user privately. They should change it after signing in.",
     "role": "Role",
     "custom": "custom",
-    "addCategory": "Add category"
+    "addCategory": "Add category",
+    "thisDevice": "This device"
   },
   "payments": {
     "saved": "Payment recorded",
@@ -753,5 +754,39 @@
     "convertTitle": "Create customer from enquiry",
     "convertHint": "Check the details from your call. The customer will appear in deliveries from their schedule.",
     "notesHint": "What did they say on the call?"
+  },
+  "backup": {
+    "downloadTitle": "Download a backup",
+    "fullTitle": "Full backup",
+    "fullText": "Everything: all records plus uploaded photos and receipts. Use this to restore or to move to a new server.",
+    "csvTitle": "CSV (Excel)",
+    "csvText": "One spreadsheet per table, opens in Excel with Bangla intact. Can also be restored.",
+    "sqlTitle": "SQL",
+    "sqlText": "INSERT statements for a database administrator restoring into an empty FarmOS database.",
+    "download": "Download",
+    "downloaded": "Backup downloaded",
+    "serverTitle": "Automatic backups on the server",
+    "createNow": "Back up now",
+    "created": "Backup saved on the server",
+    "serverText": "A full backup is made every night and kept for {{days}} days. Download one regularly and keep it somewhere else too (Google Drive, a USB stick).",
+    "noneYet": "No server backups yet",
+    "importTitle": "Restore / move from another server",
+    "importText": "Upload a Full or CSV backup made by FarmOS on any server. It is restored as a NEW farm next to your current one, so nothing here is overwritten.",
+    "chooseFile": "Choose backup file",
+    "restore": "Restore",
+    "restoring": "Restoring…",
+    "importNote": "Staff logins are not part of a backup: add your team again in Users & roles after restoring. Edited or damaged backup files are refused.",
+    "confirmTitle": "Restore this backup?",
+    "confirmText": "{{name}} will be restored as a new farm. Your current farm is not changed.",
+    "restoredToast": "Backup restored",
+    "restored": "Restored as “{{name}}”",
+    "restoredCounts": "{{rows}} records and {{files}} files restored.",
+    "openRestored": "Open restored farm",
+    "ownerOnly": "Only the farm owner can download or restore backups.",
+    "cardTitle": "Data backup",
+    "lastAuto": "Last server backup: {{when}}",
+    "noAutoYet": "No server backup yet — download one now and keep it safe.",
+    "manage": "Backup & restore",
+    "downloadFull": "Download full backup"
   }
 }

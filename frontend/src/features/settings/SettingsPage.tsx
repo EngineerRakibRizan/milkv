@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { BackupPanel } from './BackupPanel'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Plus } from 'lucide-react'
@@ -17,7 +19,10 @@ const ROLES = ['owner', 'manager', 'vet', 'accountant', 'delivery', 'worker']
 export default function SettingsPage() {
   const { t, i18n } = useTranslation()
   const { can } = useAuth()
-  const [tab, setTab] = useState<'farm' | 'team' | 'categories' | 'data'>('farm')
+  type Tab = 'farm' | 'team' | 'categories' | 'data'
+  const [params, setParams] = useSearchParams()
+  const tab = (params.get('tab') as Tab) ?? 'farm'
+  const setTab = (v: Tab) => setParams({ tab: v }, { replace: true })
   const farm = useQuery({ queryKey: ['farm'], queryFn: () => get<Farm>('/farm') })
   const canEdit = can('settings.update')
 
@@ -37,13 +42,17 @@ export default function SettingsPage() {
       {tab === 'team' && <Team />}
       {tab === 'categories' && <Categories canEdit={canEdit} />}
       {tab === 'data' && (
-        <Card className="max-w-3xl" title={t('settings.data', 'Data & backup')}>
-          <div className="space-y-3 p-4 text-sm">
-            <p>{t('settings.export', 'Every list has an “Export CSV” button and reports can be printed or saved as PDF from the print dialog.')}</p>
-            <p>{t('settings.backup', 'Database backups run on the server (see docs/OPERATIONS.md). Ask your administrator for the restore procedure.')}</p>
-            <button className="btn-secondary" onClick={() => { queryClient.clear(); location.reload() }}>{t('settings.clearCache', 'Clear offline cache on this device')}</button>
-          </div>
-        </Card>
+        <div className="space-y-4">
+          {can('backup.manage') ? <BackupPanel /> : (
+            <Card className="max-w-4xl"><p className="p-4 text-sm text-muted">{t('backup.ownerOnly')}</p></Card>
+          )}
+          <Card className="max-w-4xl" title={t('settings.thisDevice', 'This device')}>
+            <div className="flex flex-wrap items-center justify-between gap-3 p-4 text-sm">
+              <p className="text-muted">{t('settings.export')}</p>
+              <button className="btn-secondary" onClick={() => { queryClient.clear(); location.reload() }}>{t('settings.clearCache')}</button>
+            </div>
+          </Card>
+        </div>
       )}
     </>
   )

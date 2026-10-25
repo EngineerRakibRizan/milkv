@@ -47,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
             'employee' => Models\Employee::class,
             'farm_task' => Models\FarmTask::class,
             'lead' => Models\Lead::class,
+            'farm' => Models\Farm::class,
             'user' => Models\User::class,
         ]);
 

@@ -22,7 +22,31 @@ docker compose exec api php artisan migrate --force
 Put TLS in front of `web` (a reverse proxy, a load balancer or Cloudflare). Set
 `APP_URL` to the public https URL.
 
-## Backups and restore
+## Farm backups (built into the app)
+
+The owner manages these from **Settings → Data & backup**; the dashboard also has a Backup card.
+
+| Format | File | Use it for |
+|---|---|---|
+| Full backup | `*.farmos.zip` | Restoring or moving to a new server. Contains every record, the uploaded files, and a manifest with SHA-256 checksums. |
+| CSV | `*.csv.zip` | Opening in Excel: one CSV per table, with a README explaining units (money in paisa, quantities in thousandths). It can also be restored. |
+| SQL | `*.sql` | A database administrator restoring into an **empty** FarmOS database. IDs are kept as they are. |
+
+- **Restore always creates a new farm.** Every row gets a new ID and all references are re-mapped, so you can restore into a server that already has other farms. Nothing existing is overwritten. The whole import runs in one transaction.
+- **Refused backups:**
+  - An edited or damaged file.
+  - A backup made by a newer FarmOS version than the server.
+- **Staff logins are not included,** for security. After restoring, the owner re-adds the team under **Users & roles**.
+- **Automatic backups:** `farmos:backup --all` runs nightly at 02:30, and each farm's last 14 days of backups are kept in `storage/app/backups/farm-<id>/`.
+
+### Moving FarmOS to a new server
+
+1. On the old server, go to **Settings → Data & backup → Full backup → Download**. From the command line instead: `php artisan farmos:backup <farm-id> --output=farm.farmos.zip`.
+2. Install FarmOS on the new server and run `php artisan migrate`. Register the owner account.
+3. On the new server, go to **Settings → Data & backup → Restore** and upload the file. From the command line instead: `php artisan farmos:import farm.farmos.zip --owner=you@example.com`.
+4. Switch to the restored farm, check the dashboard, then re-add staff.
+
+## Server backups and restore
 
 **What is backed up:**
 - The PostgreSQL database, nightly, in custom format (`backups/farmos-YYYY-MM-DD.dump`).

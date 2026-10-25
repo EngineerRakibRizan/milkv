@@ -1,12 +1,14 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { AlertTriangle, Bird, CalendarClock, Droplets, Package, Truck, TrendingUp, Wallet } from 'lucide-react'
-import { get } from '@/lib/api'
+import { AlertTriangle, Bird, CalendarClock, Droplets, HardDriveDownload, Package, ShieldCheck, Truck, TrendingUp, Wallet } from 'lucide-react'
+import { toast } from 'sonner'
+import { get, toApiError } from '@/lib/api'
+import { downloadFrom } from '@/lib/download'
 import { useAuth } from '@/lib/auth'
-import { date, money, num } from '@/lib/format'
-import { Badge, Card, Empty, ErrorState, PageHeader, Skeleton, Stat } from '@/components/ui'
+import { date, dateTime, money, num } from '@/lib/format'
+import { Badge, Card, Empty, ErrorState, PageHeader, Skeleton, Spinner, Stat } from '@/components/ui'
 import { CowIcon } from '@/components/layout/icons'
 
 const Charts = lazy(() => import('./DashboardCharts'))
@@ -31,9 +33,36 @@ export type Dashboard = {
   }
 }
 
+/** Owner-only: last server backup at a glance and a one-click full download. */
+function BackupCard() {
+  const { t } = useTranslation()
+  const [busy, setBusy] = useState(false)
+  const q = useQuery({ queryKey: ['backups'], queryFn: () => get<{ backups: Array<{ created_at: string }> }>('/backup/stored'), staleTime: 5 * 60_000 })
+  const last = q.data?.backups[0]?.created_at
+  const download = async () => {
+    setBusy(true)
+    try { await downloadFrom('/backup/download', { format: 'full' }) } catch (e) { toast.error(toApiError(e).message) } finally { setBusy(false) }
+  }
+  return (
+    <div className="card flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
+      <div className="flex flex-1 items-center gap-3">
+        <div className="rounded-lg bg-brand-50 p-2.5 text-brand-700 dark:bg-brand-900/30"><ShieldCheck className="h-5 w-5" /></div>
+        <div>
+          <p className="font-semibold">{t('backup.cardTitle')}</p>
+          <p className="text-sm text-muted">{last ? t('backup.lastAuto', { when: dateTime(last) }) : t('backup.noAutoYet')}</p>
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Link to="/settings?tab=data" className="btn-secondary">{t('backup.manage')}</Link>
+        <button className="btn-primary" disabled={busy} onClick={download}>{busy ? <Spinner /> : <HardDriveDownload className="h-4 w-4" />}{t('backup.downloadFull')}</button>
+      </div>
+    </div>
+  )
+}
+
 export default function DashboardPage() {
   const { t } = useTranslation()
-  const { user } = useAuth()
+  const { user, can } = useAuth()
   const q = useQuery({ queryKey: ['dashboard'], queryFn: () => get<Dashboard>('/dashboard'), refetchInterval: 60_000 })
   const d = q.data
 
@@ -145,6 +174,8 @@ export default function DashboardPage() {
           ) : <Empty />}
         </Card>
       </div>
+
+      {can('backup.manage') && <BackupCard />}
 
       {f && f.recent_payments.length > 0 && (
         <Card title={t('dashboard.recent')}>

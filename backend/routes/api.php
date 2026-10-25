@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AttachmentController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BackupController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\FarmController;
 use App\Http\Controllers\Api\InventoryController;
@@ -117,6 +118,12 @@ Route::middleware(['auth:sanctum', 'throttle:api', 'idempotent'])->group(functio
         Route::get('tasks', [TeamController::class, 'tasks']);
         Route::post('tasks', [TeamController::class, 'storeTask']);
         Route::patch('tasks/{task}', [TeamController::class, 'updateTask']);
+        Route::get('backup/download', [BackupController::class, 'download']);
+        Route::get('backup/stored', [BackupController::class, 'index']);
+        Route::post('backup/stored', [BackupController::class, 'store']);
+        Route::get('backup/stored/{name}', [BackupController::class, 'stored'])->where('name', '[A-Za-z0-9._-]+');
+        Route::post('backup/import', [BackupController::class, 'import']);
+
         Route::get('leads', [LeadController::class, 'index']);
         Route::patch('leads/{lead}', [LeadController::class, 'update']);
         Route::post('leads/{lead}/convert', [LeadController::class, 'toCustomer']);
