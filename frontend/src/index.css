@@ -63,6 +63,27 @@ button:disabled { cursor: not-allowed; }
 .landing { font-family: "Hind Siliguri", "Inter", ui-sans-serif, system-ui, sans-serif; scroll-behavior: smooth; }
 html:has(.landing) { scroll-behavior: smooth; }
 
+/* iOS Safari gives date/time inputs a fixed intrinsic width that ignores width:100%
+   (they overflow their card) and collapses their height when empty. Make them
+   behave like every other text field. */
+input[type="date"], input[type="time"], input[type="month"], input[type="datetime-local"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 2.5rem;
+  background-clip: padding-box;
+}
+input[type="date"]::-webkit-date-and-time-value,
+input[type="time"]::-webkit-date-and-time-value,
+input[type="month"]::-webkit-date-and-time-value { text-align: left; margin: 0; }
+
+/* iOS zooms the page when a field under 16px gets focus. Use 16px on phones. */
+@media (max-width: 640px) {
+  input:not([type="checkbox"]):not([type="radio"]), select, textarea { font-size: 16px; }
+}
+
 /* Numeric inputs: no spinners, tabular digits everywhere numbers line up. */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }

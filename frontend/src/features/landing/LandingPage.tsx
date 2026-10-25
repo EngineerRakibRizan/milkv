@@ -220,13 +220,13 @@ function LeadForm() {
   return (
     <form onSubmit={submit} noValidate className="rounded-3xl bg-white p-6 text-[#10261a] sm:p-8">
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block sm:col-span-2"><span className="mb-1.5 block text-sm font-semibold">{t('landing.fName')} *</span>
+        <label className="block min-w-0 sm:col-span-2"><span className="mb-1.5 block text-sm font-semibold">{t('landing.fName')} *</span>
           <input className={field} required autoComplete="name" value={v.name} onChange={(e) => set('name', e.target.value)} />{err('name')}</label>
-        <label className="block"><span className="mb-1.5 block text-sm font-semibold">{t('landing.fPhone')} *</span>
+        <label className="block min-w-0"><span className="mb-1.5 block text-sm font-semibold">{t('landing.fPhone')} *</span>
           <input className={field} required type="tel" inputMode="tel" autoComplete="tel" placeholder="01XXXXXXXXX" value={v.phone} onChange={(e) => set('phone', e.target.value)} />{err('phone')}</label>
-        <label className="block"><span className="mb-1.5 block text-sm font-semibold">{t('landing.fArea')}</span>
+        <label className="block min-w-0"><span className="mb-1.5 block text-sm font-semibold">{t('landing.fArea')}</span>
           <input className={field} placeholder={t('landing.fAreaPh')} value={v.area} onChange={(e) => set('area', e.target.value)} />{err('area')}</label>
-        <label className="block sm:col-span-2"><span className="mb-1.5 block text-sm font-semibold">{t('landing.fAddress')}</span>
+        <label className="block min-w-0 sm:col-span-2"><span className="mb-1.5 block text-sm font-semibold">{t('landing.fAddress')}</span>
           <input className={field} autoComplete="street-address" value={v.address} onChange={(e) => set('address', e.target.value)} />{err('address')}</label>
         <div className="sm:col-span-2">
           <span className="mb-1.5 block text-sm font-semibold">{t('landing.fQty')}</span>
@@ -242,9 +242,9 @@ function LeadForm() {
           </div>
           {err('quantity')}
         </div>
-        <label className="block"><span className="mb-1.5 block text-sm font-semibold"><CalendarCheck className="mr-1 inline h-4 w-4" />{t('landing.fStart')}</span>
+        <label className="block min-w-0"><span className="mb-1.5 block text-sm font-semibold"><CalendarCheck className="mr-1 inline h-4 w-4" />{t('landing.fStart')}</span>
           <input className={field} type="date" min={today()} value={v.start_date} onChange={(e) => set('start_date', e.target.value)} />{err('start_date')}</label>
-        <label className="block"><span className="mb-1.5 block text-sm font-semibold">{t('landing.fMsg')}</span>
+        <label className="block min-w-0"><span className="mb-1.5 block text-sm font-semibold">{t('landing.fMsg')}</span>
           <input className={field} value={v.message} onChange={(e) => set('message', e.target.value)} />{err('message')}</label>
         {/* Honeypot: hidden from people, bots fill it and get rejected. */}
         <input type="text" name="website" tabIndex={-1} autoComplete="off" value={v.website} onChange={(e) => set('website', e.target.value)}
