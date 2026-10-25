@@ -42,6 +42,29 @@ Artisan::command('farmos:import {file : Path to a .farmos.zip or .csv.zip backup
         $this->info("Restored as farm #{$r['farm_id']} \"{$r['name']}\": ".array_sum($r['counts'])." rows, {$r['files']} files.");
     })->purpose('Restore a FarmOS backup as a new farm (for moving to a new server)');
 
+Artisan::command('farmos:create-owner {email} {--name=} {--farm=}', function () {
+    // Interactive on purpose: the password is typed by the owner and never appears in shell history.
+    $email = $this->argument('email');
+    if (\App\Models\User::where('email', $email)->exists()) {
+        return $this->error("A user with {$email} already exists.");
+    }
+    $name = $this->option('name') ?: $this->ask('Your name');
+    $farmName = $this->option('farm') ?: $this->ask('Farm name', 'Aura Dairy & Agro');
+    $password = $this->secret('Password (min 8 characters)');
+    if (strlen((string) $password) < 8 || $password !== $this->secret('Repeat password')) {
+        return $this->error('Passwords must match and be at least 8 characters.');
+    }
+    $farm = \Illuminate\Support\Facades\DB::transaction(function () use ($name, $email, $password, $farmName) {
+        $user = \App\Models\User::create(['name' => $name, 'email' => $email, 'password' => $password]);
+        $farm = \App\Models\Farm::create(['name' => $farmName]);
+        $farm->users()->attach($user->id, ['role' => 'owner', 'status' => 'active']);
+        \App\Domain\Accounting\Ledger::seedAccounts($farm);
+
+        return $farm;
+    });
+    $this->info("Created farm #{$farm->id} \"{$farm->name}\" owned by {$email}. Set VITE_PUBLIC_FARM_ID={$farm->id} for the landing page.");
+})->purpose('Create the first owner account and farm (use when public sign-up is disabled)');
+
 Schedule::command('farmos:alerts')->hourly()->withoutOverlapping();
 Schedule::command('farmos:backup --all')->dailyAt('02:30')->withoutOverlapping();
 Schedule::command('farmos:prune')->daily();

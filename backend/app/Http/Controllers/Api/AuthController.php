@@ -17,6 +17,7 @@ class AuthController extends Controller
     /** Creates the owner account and their first farm in one step. */
     public function register(Request $r)
     {
+        abort_unless(config('farmos.registration'), 403, 'Sign-up is closed on this server. Ask the farm owner for an account.');
         $d = $r->validate([
             'name' => 'required|string|max:120',
             'email' => 'required|email|max:190|unique:users,email',

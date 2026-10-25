@@ -18,6 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withBroadcasting(__DIR__.'/../routes/channels.php', ['prefix' => 'api', 'middleware' => ['api', 'auth:sanctum', 'farm']])
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias(['farm' => ResolveFarm::class, 'idempotent' => Idempotency::class]);
+        // The API container is only reachable through nginx, so forwarded client IP and
+        // https scheme are trustworthy. Without this every visitor shares the proxy's IP
+        // (one rate limit for everyone) and generated URLs use http.
+        $middleware->trustProxies(at: '*');
         // The tenant must be resolved before route-model binding runs, so a
         // bound model is always looked up inside the current farm's scope.
         $middleware->prependToPriorityList(SubstituteBindings::class, ResolveFarm::class);

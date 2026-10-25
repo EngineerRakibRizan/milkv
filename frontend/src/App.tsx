@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useAuth } from './lib/auth'
 import { AppShell } from './components/layout/AppShell'
-import { LoginPage, RegisterPage } from './features/auth/AuthPages'
+import { LoginPage, REGISTRATION_OPEN, RegisterPage } from './features/auth/AuthPages'
 import { Spinner } from './components/ui'
 
 // Route-level code splitting: each module downloads only when first opened.
@@ -46,7 +46,7 @@ export default function App() {
         <Route path="/" element={landing} />
         <Route path="/order" element={landing} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/register" element={REGISTRATION_OPEN ? <RegisterPage /> : <Navigate to="/login" replace />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     )

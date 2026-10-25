@@ -8,6 +8,10 @@
 
 return [
 
+    // Public self-signup (creates a new farm). Turn off on a single-farm production server;
+    // create the owner with `php artisan farmos:create-owner` instead.
+    'registration' => (bool) env('FARMOS_REGISTRATION', true),
+
     // Abilities are "<module>.<action>". "module.*" grants every action in it.
     'roles' => [
         'owner' => ['*'],

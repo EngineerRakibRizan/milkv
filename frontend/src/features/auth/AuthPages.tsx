@@ -5,6 +5,9 @@ import { Input, Spinner } from '@/components/ui'
 import { useAuth } from '@/lib/auth'
 import { toApiError } from '@/lib/api'
 
+/** Public sign-up is off on single-farm production servers (VITE_REGISTRATION=false). */
+export const REGISTRATION_OPEN = import.meta.env.VITE_REGISTRATION !== 'false'
+
 function AuthLayout({ title, children, footer }: { title: string; children: ReactNode; footer: ReactNode }) {
   const { t, i18n } = useTranslation()
   return (
@@ -52,7 +55,9 @@ export function LoginPage() {
   }
 
   return (
-    <AuthLayout title={t('auth.welcome')} footer={<span>{t('auth.noAccount')} <Link className="font-medium text-brand-700" to="/register">{t('auth.register')}</Link></span>}>
+    <AuthLayout title={t('auth.welcome')} footer={REGISTRATION_OPEN
+      ? <span>{t('auth.noAccount')} <Link className="font-medium text-brand-700" to="/register">{t('auth.register')}</Link></span>
+      : <Link className="font-medium text-brand-700" to="/">← {t('nav.website', 'Website')}</Link>}>
       <form onSubmit={submit} className="space-y-4">
         <Input label={t('auth.email')} type="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />
         <Input label={t('auth.password')} type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
