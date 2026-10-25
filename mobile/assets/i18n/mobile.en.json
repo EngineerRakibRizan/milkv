@@ -1,0 +1,24 @@
+{
+  "m": {
+    "appName": "Aura Dairy",
+    "more": "More",
+    "allDelivered": "All delivered for this day",
+    "chooseFarm": "Choose a farm",
+    "noFarm": "Your account is not part of any farm yet. Ask the farm owner to add you.",
+    "switchFarm": "Switch farm",
+    "discard": "Discard",
+    "discardChanges": "Discard the numbers you have not saved?",
+    "dismiss": "OK, dismiss",
+    "logoutPending": "{{count}} change(s) have not synced yet and will be lost if you sign out now.",
+    "lowStock": "Running low",
+    "needsOnline": "This needs an internet connection.",
+    "offlineNoData": "No internet connection, and nothing saved on this phone yet.",
+    "queued": "Saved on this phone. It will sync when you are online.",
+    "rejected": "{{count}} change(s) were not accepted by the server — tap to see",
+    "rejectedTitle": "Not saved on the server",
+    "retry": "Try again",
+    "savedCopy": "Offline — showing data saved {{when}}",
+    "sync": "Sync",
+    "syncNow": "Sync now"
+  }
+}
