@@ -46,10 +46,12 @@ class AppServiceProvider extends ServiceProvider
             'supplier' => Models\Supplier::class,
             'employee' => Models\Employee::class,
             'farm_task' => Models\FarmTask::class,
+            'lead' => Models\Lead::class,
             'user' => Models\User::class,
         ]);
 
         RateLimiter::for('auth', fn (Request $r) => Limit::perMinute(10)->by($r->ip()));
+        RateLimiter::for('leads', fn (Request $r) => [Limit::perMinute(5)->by($r->ip()), Limit::perDay(30)->by($r->ip())]);
         RateLimiter::for('api', fn (Request $r) => Limit::perMinute(300)->by($r->user()?->id ?: $r->ip()));
     }
 }

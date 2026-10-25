@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<title>Aura Dairy &amp; Agro — Leaflet (A4, 2 sides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  /* ===== Print spec: A4 portrait (210 × 297 mm), 2 pages = front + back, full bleed ===== */
+  @page { size: 210mm 297mm; margin: 0; }
+  :root { --g9: #0b2e1b; --g8: #12432a; --g7: #166534; --g5: #22c55e; --g1: #e7f5ea; --cream: #fffaf0; --gold: #f2b632; --ink: #10261a; --muted: #4b6355; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Hind Siliguri", sans-serif; color: var(--ink); background: #ccc; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { position: relative; width: 210mm; height: 297mm; overflow: hidden; background: var(--cream); page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  @media screen { .page { margin: 10mm auto; box-shadow: 0 4px 24px rgba(0,0,0,.2); } }
+
+  .brand { display: flex; align-items: center; gap: 3mm; }
+  .brand svg { width: 13mm; height: 13mm; }
+  .brand .en { font-family: Poppins; font-weight: 800; font-size: 5.6mm; line-height: 1; letter-spacing: .2mm; }
+  .brand .bn { font-weight: 600; font-size: 3.4mm; opacity: .85; margin-top: .8mm; }
+
+  /* ---------- FRONT ---------- */
+  .hero { position: relative; height: 138mm; color: #fff; padding: 14mm 14mm 0;
+    background: radial-gradient(110% 80% at 90% 10%, #1f7a45 0%, var(--g8) 50%, var(--g9) 100%); }
+  .hero .dots { position: absolute; inset: 0; opacity: .07; background-image: radial-gradient(circle at 6px 6px, #fff 1px, transparent 1.5px); background-size: 5mm 5mm; }
+  .hero .brand .bn { color: #cfe8d6; }
+  .tag { display: inline-flex; align-items: center; gap: 2mm; margin-top: 12mm; background: rgba(255,255,255,.12); border: .3mm solid rgba(255,255,255,.25);
+    padding: 1.2mm 4mm; border-radius: 20mm; font-size: 3.6mm; font-weight: 600; }
+  .tag i { width: 2mm; height: 2mm; border-radius: 50%; background: var(--gold); }
+  .hero h1 { font-family: "Baloo Da 2"; font-weight: 800; line-height: 1.02; margin-top: 4mm; }
+  .hero h1 span { display: block; }
+  .hero h1 .a { font-size: 12mm; }
+  .hero h1 .b { font-size: 16mm; color: var(--gold); }
+  .hero p { width: 100mm; font-size: 4.4mm; line-height: 1.55; margin-top: 4mm; color: #e3f2e7; }
+  .hero .art { position: absolute; right: 4mm; bottom: 12mm; width: 90mm; height: 112mm; }
+  .wave { position: absolute; left: -2mm; bottom: -1px; width: calc(100% + 4mm); height: 20mm; display: block; }
+
+  .body { padding: 6mm 14mm 0; }
+  .section-title { font-family: "Baloo Da 2"; font-weight: 800; font-size: 7.4mm; color: var(--g8); line-height: 1.1; }
+  .section-title small { display: block; font-family: "Hind Siliguri"; font-weight: 500; font-size: 3.6mm; color: var(--muted); margin-top: 1mm; }
+
+  .benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-top: 5mm; }
+  .benefit { background: #fff; border-radius: 4mm; padding: 4.5mm; border: .3mm solid #e6efe8; }
+  .benefit .ic { width: 11mm; height: 11mm; border-radius: 3mm; background: var(--g1); display: grid; place-items: center; }
+  .benefit .ic svg { width: 6mm; height: 6mm; }
+  .benefit h3 { font-size: 4.3mm; font-weight: 700; margin-top: 3mm; color: var(--g9); line-height: 1.3; }
+  .benefit p { font-size: 3.4mm; color: var(--muted); margin-top: 1mm; line-height: 1.5; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-top: 8mm; position: relative; }
+  .step { text-align: center; }
+  .step .n { width: 12mm; height: 12mm; border-radius: 50%; margin: 0 auto; background: var(--g7); color: #fff; display: grid; place-items: center;
+    font-family: Poppins; font-weight: 700; font-size: 5mm; box-shadow: 0 0 0 1.6mm var(--g1); }
+  .step h4 { font-size: 4.2mm; font-weight: 700; margin-top: 3mm; color: var(--g9); }
+  .step p { font-size: 3.3mm; color: var(--muted); margin-top: .5mm; line-height: 1.45; }
+  .steps::before { content: ""; position: absolute; top: 6mm; left: 18%; right: 18%; border-top: .5mm dashed #b9d6c1; z-index: 0; }
+  .step .n { position: relative; z-index: 1; }
+
+  .front-cta { position: absolute; left: 14mm; right: 14mm; bottom: 12mm; display: flex; align-items: center; justify-content: space-between;
+    background: var(--g9); color: #fff; border-radius: 5mm; padding: 5mm 7mm; }
+  .front-cta .l { font-size: 3.8mm; color: #cfe8d6; }
+  .front-cta .num { font-family: Poppins; font-weight: 800; font-size: 9mm; line-height: 1.1; white-space: nowrap; }
+  .front-cta .pill { background: var(--gold); color: var(--g9); font-weight: 700; font-size: 4mm; padding: 2.5mm 5mm; border-radius: 20mm; white-space: nowrap; }
+
+  /* ---------- BACK ---------- */
+  .back-head { background: var(--g9); color: #fff; padding: 12mm 14mm 10mm; display: flex; justify-content: space-between; align-items: center; }
+  .back-head .brand .bn { color: #cfe8d6; }
+  .back-head .right { text-align: right; font-size: 3.6mm; color: #cfe8d6; }
+  .back-head .right b { display: block; font-family: "Baloo Da 2"; font-size: 6mm; color: #fff; }
+
+  .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-top: 5mm; }
+  .product { background: #fff; border-radius: 4mm; overflow: hidden; border: .3mm solid #e6efe8; }
+  .product .top { height: 26mm; display: grid; place-items: center; }
+  .product .top svg { height: 20mm; }
+  .product .info { padding: 3.5mm 4mm 4mm; }
+  .product h3 { font-size: 4.4mm; font-weight: 700; color: var(--g9); }
+  .product .unit { font-size: 3.2mm; color: var(--muted); }
+  .product .price { margin-top: 2mm; font-family: Poppins; font-weight: 800; font-size: 6.2mm; color: var(--g7); }
+  .product .price small { font-family: "Hind Siliguri"; font-weight: 500; font-size: 3.2mm; color: var(--muted); }
+
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-top: 5mm; }
+  .plan { border-radius: 4mm; padding: 5mm; background: #fff; border: .3mm solid #e6efe8; position: relative; }
+  .plan.hot { background: var(--g8); color: #fff; border-color: var(--g8); }
+  .plan .badge { position: absolute; top: -3mm; right: 4mm; background: var(--gold); color: var(--g9); font-size: 3mm; font-weight: 700; padding: .8mm 3mm; border-radius: 10mm; }
+  .plan h4 { font-size: 4.4mm; font-weight: 700; }
+  .plan .qty { font-family: "Baloo Da 2"; font-weight: 800; font-size: 9mm; line-height: 1.1; margin-top: 1mm; }
+  .plan .qty small { font-size: 4mm; font-weight: 600; }
+  .plan .m { font-size: 3.4mm; opacity: .8; margin-top: 1mm; }
+  .plan .p { font-family: Poppins; font-weight: 800; font-size: 5.6mm; margin-top: 2.5mm; }
+  .plan .p small { font-family: "Hind Siliguri"; font-weight: 500; font-size: 3.2mm; opacity: .8; }
+
+  .info-row { display: grid; grid-template-columns: 1.15fr 1fr; gap: 5mm; margin-top: 7mm; }
+  .box { background: #fff; border-radius: 4mm; padding: 5mm; border: .3mm solid #e6efe8; }
+  .box h4 { font-family: "Baloo Da 2"; font-weight: 800; font-size: 5.4mm; color: var(--g8); }
+  .box ul { list-style: none; margin-top: 2.5mm; }
+  .box li { display: flex; gap: 2.5mm; font-size: 3.6mm; line-height: 1.5; margin-top: 1.6mm; }
+  .box li::before { content: ""; flex: none; width: 4mm; height: 4mm; margin-top: .9mm; border-radius: 50%;
+    background: var(--g7) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/70% no-repeat; }
+  .pay { display: flex; flex-wrap: wrap; gap: 2mm; margin-top: 3mm; }
+  .pay span { border: .3mm solid #cfe0d4; border-radius: 2mm; padding: 1mm 3mm; font-size: 3.4mm; font-weight: 600; color: var(--g8); background: var(--g1); }
+
+  .contact { position: absolute; left: 0; right: 0; bottom: 0; background: var(--g9); color: #fff; padding: 9mm 14mm 10mm; }
+  .contact .grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 6mm; align-items: center; }
+  .contact .l { font-size: 3.8mm; color: #cfe8d6; }
+  .contact .num { font-family: Poppins; font-weight: 800; font-size: 10mm; line-height: 1.1; white-space: nowrap; }
+  .contact .num2 { font-family: Poppins; font-weight: 600; font-size: 4.4mm; color: #cfe8d6; margin-top: 1mm; }
+  .contact .meta { font-size: 3.6mm; line-height: 1.7; color: #e3f2e7; }
+  .contact .meta b { color: var(--gold); font-weight: 700; }
+  .note { font-size: 2.8mm; color: var(--muted); margin-top: 3mm; }
+</style>
+</head>
+<body>
+<script>
+  /* ===== EDIT THESE BEFORE PRINTING (prices in Taka) ===== */
+  window.AURA = {
+    phone: '01XXX-XXXXXX',
+    phone2: '01XXX-XXXXXX',
+    address: 'খামারের ঠিকানা লিখুন',
+    area: 'ডেলিভারি এলাকা লিখুন',
+    facebook: 'fb.com/auradairy',
+    priceMilk: '—',        // per litre
+    priceHalf: '—',        // per half litre
+    priceEgg: '—',         // per dozen hen eggs
+    priceDuckEgg: '—',     // per dozen duck eggs
+    plan1: '—', plan2: '—', plan3: '—',   // monthly totals for ½ L, 1 L, 2 L daily
+  }
+</script>
+
+<!-- ===================== FRONT ===================== -->
+<section class="page">
+  <div class="hero">
+    <div class="dots"></div>
+    <div class="brand">
+      <svg viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#fff"/><path d="M17 41c0-10 6.5-18 15-18s15 8 15 18" fill="none" stroke="#166534" stroke-width="5" stroke-linecap="round"/><path d="M32 23V12M26 15l6-4 6 4" fill="none" stroke="#f2b632" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="44" r="5" fill="#f2b632"/></svg>
+      <div><div class="en">AURA DAIRY &amp; AGRO</div><div class="bn">অরা ডেইরি অ্যান্ড অ্যাগ্রো</div></div>
+    </div>
+    <span class="tag"><i></i>খামার থেকে সরাসরি আপনার ঘরে</span>
+    <h1><span class="a">প্রতিদিন সকালে</span><span class="b">খাঁটি গরুর দুধ</span></h1>
+    <p>আমাদের নিজস্ব খামারে যত্নে লালিত গাভীর তাজা দুধ — কোনো মিশ্রণ ছাড়া, প্রতিদিন সকালে নির্দিষ্ট সময়ে আপনার দরজায় পৌঁছে দিই।</p>
+
+    <svg class="art" viewBox="0 0 400 520" aria-hidden="true">
+      <defs><linearGradient id="bt" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#dfe9e2"/></linearGradient></defs>
+      <circle cx="250" cy="150" r="120" fill="#f2b632" opacity=".16"/><circle cx="250" cy="150" r="78" fill="#f2b632" opacity=".24"/>
+      <g transform="translate(180 110) scale(.82)">
+        <ellipse cx="80" cy="455" rx="100" ry="15" fill="#000" opacity=".2"/>
+        <rect x="52" y="0" width="56" height="34" rx="8" fill="#f2b632"/><rect x="48" y="28" width="64" height="12" rx="5" fill="#d99a16"/>
+        <path d="M58 40 h44 v40 c0 18 52 40 52 90 v250 a30 30 0 0 1 -30 30 h-88 a30 30 0 0 1 -30 -30 v-250 c0 -50 52 -72 52 -90z" fill="url(#bt)" stroke="#cfe0d4" stroke-width="3"/>
+        <rect x="18" y="220" width="124" height="140" rx="12" fill="#166534"/>
+        <text x="80" y="268" text-anchor="middle" font-family="Poppins" font-weight="800" font-size="30" fill="#fff">AURA</text>
+        <text x="80" y="300" text-anchor="middle" font-family="Hind Siliguri" font-weight="700" font-size="24" fill="#f2b632">খাঁটি দুধ</text>
+        <text x="80" y="336" text-anchor="middle" font-family="Poppins" font-weight="600" font-size="14" fill="#cfe8d6" letter-spacing="2">FRESH MILK</text>
+        <path d="M30 120 c10 -20 30 -34 40 -40" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none" opacity=".9"/>
+      </g>
+      <g transform="translate(80 300) scale(.78)">
+        <ellipse cx="62" cy="246" rx="70" ry="12" fill="#000" opacity=".2"/>
+        <path d="M8 0 h108 l-12 232 a14 14 0 0 1 -14 13 h-56 a14 14 0 0 1 -14 -13z" fill="#fff" stroke="#d5e3d9" stroke-width="3"/>
+        <path d="M22 60 v150" stroke="#eef3ef" stroke-width="7" stroke-linecap="round"/>
+      </g>
+    </svg>
+    <svg class="wave" viewBox="0 0 800 80" preserveAspectRatio="none"><path d="M0 40 C150 0 300 80 450 45 C600 10 700 50 800 30 V80 H0Z" fill="#fffaf0"/></svg>
+  </div>
+
+  <div class="body">
+    <h2 class="section-title">কেন অরা'র দুধ?<small>যে দুধ আপনার পরিবারকে প্রতিদিন দিতে ভরসা পাবেন</small></h2>
+    <div class="benefits">
+      <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7s6 6.3 6 11a6 6 0 0 1-12 0c0-4.7 6-11 6-11z"/></svg></div>
+        <h3>খাঁটি ও ভেজালমুক্ত</h3><p>পানি, পাউডার বা কোনো কিছু মেশানো ছাড়া — যেমন দোহানো, তেমন।</p></div>
+      <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg></div>
+        <h3>সুস্থ গাভী</h3><p>নিয়মিত পশু চিকিৎসকের পরিচর্যা, টিকা ও পুষ্টিকর খাবার।</p></div>
+      <div class="benefit"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></div>
+        <h3>প্রতিদিন হোম ডেলিভারি</h3><p>প্রতিদিন সকালে আপনার বাসায় — বাজারে যাওয়ার ঝামেলা নেই।</p></div>
+    </div>
+
+    <h2 class="section-title" style="margin-top:8mm">কীভাবে শুরু করবেন</h2>
+    <div class="steps">
+      <div class="step"><div class="n">১</div><h4>কল বা মেসেজ করুন</h4><p>নাম, ঠিকানা ও প্রতিদিন কতটুকু দুধ লাগবে জানান</p></div>
+      <div class="step"><div class="n">২</div><h4>প্রতিদিন দুধ পান</h4><p>পরদিন সকাল থেকেই ডেলিভারি শুরু</p></div>
+      <div class="step"><div class="n">৩</div><h4>মাস শেষে বিল</h4><p>নগদ, বিকাশ বা নগদ অ্যাপে সহজে পরিশোধ</p></div>
+    </div>
+  </div>
+
+  <div class="front-cta">
+    <div><div class="l">দৈনিক দুধের অর্ডার</div><div class="num" data-f="phone"></div></div>
+    <div class="pill">আজই অর্ডার করুন →</div>
+  </div>
+</section>
+
+<!-- ===================== BACK ===================== -->
+<section class="page">
+  <div class="back-head">
+    <div class="brand">
+      <svg viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#fff"/><path d="M17 41c0-10 6.5-18 15-18s15 8 15 18" fill="none" stroke="#166534" stroke-width="5" stroke-linecap="round"/><path d="M32 23V12M26 15l6-4 6 4" fill="none" stroke="#f2b632" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="44" r="5" fill="#f2b632"/></svg>
+      <div><div class="en">AURA DAIRY &amp; AGRO</div><div class="bn">অরা ডেইরি অ্যান্ড অ্যাগ্রো</div></div>
+    </div>
+    <div class="right"><b>আমাদের পণ্য ও দাম</b>খামারের তাজা পণ্য, সরাসরি আপনার কাছে</div>
+  </div>
+
+  <div class="body">
+    <div class="products">
+      <div class="product"><div class="top" style="background:#e7f5ea">
+          <svg viewBox="0 0 60 90"><rect x="22" y="2" width="16" height="9" rx="2" fill="#f2b632"/><path d="M24 11h12v10c0 5 14 10 14 24v36a7 7 0 0 1-7 7H17a7 7 0 0 1-7-7V45c0-14 14-19 14-24z" fill="#fff" stroke="#9cc4a8" stroke-width="2"/><rect x="14" y="52" width="32" height="20" rx="3" fill="#166534"/></svg></div>
+        <div class="info"><h3>গরুর দুধ</h3><div class="unit">১ লিটার</div><div class="price">৳<span data-f="priceMilk"></span> <small>/ লিটার</small></div></div></div>
+      <div class="product"><div class="top" style="background:#fff4dc">
+          <svg viewBox="0 0 90 70"><ellipse cx="30" cy="38" rx="17" ry="22" fill="#f7e2c0" stroke="#d9b98a" stroke-width="2"/><ellipse cx="58" cy="40" rx="17" ry="22" fill="#fbecd2" stroke="#d9b98a" stroke-width="2"/><path d="M8 58h74" stroke="#d9b98a" stroke-width="3" stroke-linecap="round"/></svg></div>
+        <div class="info"><h3>মুরগির ডিম</h3><div class="unit">১ ডজন</div><div class="price">৳<span data-f="priceEgg"></span> <small>/ ডজন</small></div></div></div>
+      <div class="product"><div class="top" style="background:#eef3f7">
+          <svg viewBox="0 0 90 70"><ellipse cx="30" cy="38" rx="17" ry="22" fill="#eef4f2" stroke="#b9c9c3" stroke-width="2"/><ellipse cx="58" cy="40" rx="17" ry="22" fill="#f6faf8" stroke="#b9c9c3" stroke-width="2"/><path d="M8 58h74" stroke="#b9c9c3" stroke-width="3" stroke-linecap="round"/></svg></div>
+        <div class="info"><h3>হাঁসের ডিম</h3><div class="unit">১ ডজন</div><div class="price">৳<span data-f="priceDuckEgg"></span> <small>/ ডজন</small></div></div></div>
+    </div>
+
+    <h2 class="section-title" style="margin-top:9mm">মাসিক দুধের প্যাকেজ<small>প্রতিদিন নির্দিষ্ট পরিমাণ — মাস শেষে একবারে বিল</small></h2>
+    <div class="plans">
+      <div class="plan"><h4>ছোট পরিবার</h4><div class="qty">½ <small>লিটার/দিন</small></div><div class="m">৩০ দিন · ১৫ লিটার</div><div class="p">৳<span data-f="plan1"></span> <small>/ মাস</small></div></div>
+      <div class="plan hot"><span class="badge">সবচেয়ে জনপ্রিয়</span><h4>পরিবার</h4><div class="qty">১ <small>লিটার/দিন</small></div><div class="m">৩০ দিন · ৩০ লিটার</div><div class="p">৳<span data-f="plan2"></span> <small>/ মাস</small></div></div>
+      <div class="plan"><h4>বড় পরিবার / দোকান</h4><div class="qty">২ <small>লিটার/দিন</small></div><div class="m">৩০ দিন · ৬০ লিটার</div><div class="p">৳<span data-f="plan3"></span> <small>/ মাস</small></div></div>
+    </div>
+
+    <div class="info-row">
+      <div class="box"><h4>ডেলিভারির নিয়ম</h4>
+        <ul>
+          <li>প্রতিদিন সকালে নির্ধারিত সময়ে ডেলিভারি</li>
+          <li>যেকোনো দিন পরিমাণ বাড়ানো-কমানো বা বন্ধ রাখা যায় — আগের দিন জানালেই হবে</li>
+          <li>প্রতিটি ডেলিভারির হিসাব রাখা হয়, মাস শেষে বিস্তারিত বিল</li>
+          <li>হোটেল, রেস্তোরাঁ ও দোকানের জন্য পাইকারি দাম</li>
+        </ul></div>
+      <div class="box"><h4>পেমেন্ট</h4>
+        <ul><li>মাসিক বা সাপ্তাহিক বিল</li><li>অগ্রিম পরিশোধের সুবিধা</li></ul>
+        <div class="pay"><span>নগদ টাকা</span><span>বিকাশ</span><span>নগদ</span><span>রকেট</span><span>ব্যাংক</span></div>
+      </div>
+    </div>
+    <p class="note">* দাম পরিবর্তনশীল। সর্বশেষ দাম জানতে কল করুন।</p>
+  </div>
+
+  <div class="contact">
+    <div class="grid">
+      <div><div class="l">অর্ডার ও যোগাযোগ</div><div class="num" data-f="phone"></div><div class="num2">WhatsApp: <span data-f="phone2"></span></div></div>
+      <div class="meta"><b>ঠিকানা:</b> <span data-f="address"></span><br/><b>ডেলিভারি এলাকা:</b> <span data-f="area"></span><br/><b>ফেসবুক:</b> <span data-f="facebook"></span></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  for (const el of document.querySelectorAll('[data-f]')) el.textContent = window.AURA[el.dataset.f]
+</script>
+</body>
+</html>

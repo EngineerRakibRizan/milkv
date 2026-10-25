@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
     {
         mt_srand(42);
         $owner = User::create(['name' => 'Rahim Uddin', 'email' => 'owner@farmos.test', 'password' => 'password']);
-        $farm = Farm::create(['name' => 'Green Valley Dairy & Poultry', 'address' => 'Savar, Dhaka', 'phone' => '01711000000',
+        $farm = Farm::create(['name' => 'Aura Dairy & Agro', 'address' => 'Savar, Dhaka', 'phone' => '01711000000',
             'currency' => 'BDT', 'timezone' => 'Asia/Dhaka', 'default_milk_price' => 9000]);
         $farm->users()->attach($owner->id, ['role' => 'owner', 'status' => 'active']);
         Ledger::seedAccounts($farm);

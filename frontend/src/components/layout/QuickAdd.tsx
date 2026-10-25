@@ -33,9 +33,9 @@ export function QuickAdd({ trigger }: { trigger: ReactNode }) {
   if (!items.length) return null
   return (
     <div className="relative" ref={ref}>
-      <button className="btn-primary px-2.5 sm:px-3.5" onClick={() => setOpen((o) => !o)} aria-haspopup="menu" aria-expanded={open}>{trigger}</button>
+      <button className="btn-primary h-10 px-3 py-0 sm:px-4" onClick={() => setOpen((o) => !o)} aria-haspopup="menu" aria-expanded={open}>{trigger}</button>
       {open && (
-        <div role="menu" className="absolute right-0 top-11 z-40 w-56 overflow-hidden rounded-xl border border-line bg-surface py-1 shadow-lg">
+        <div role="menu" className="absolute right-0 top-12 z-40 w-56 overflow-hidden rounded-xl border border-line bg-surface py-1 shadow-lg">
           {items.map((i) => (
             <button key={i.label} role="menuitem" className="flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm hover:bg-canvas"
               onClick={() => { setOpen(false); i.go() }}>

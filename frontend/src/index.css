@@ -47,6 +47,22 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Bangla: a real Bengali typeface, a touch more line height for the tall
+   matras, and never any letter-spacing (it splits conjuncts apart). */
+html:lang(bn) body { font-family: "Hind Siliguri", "Inter", ui-sans-serif, system-ui, sans-serif; line-height: 1.6; }
+html:lang(bn) * { letter-spacing: normal !important; }
+html:lang(bn) h1, html:lang(bn) h2, html:lang(bn) h3 { line-height: 1.35; }
+
+/* Tailwind v4 resets buttons to the default arrow cursor; anything clickable shows the hand. */
+button:not(:disabled), [role="button"]:not([aria-disabled="true"]), [role="menuitem"], [role="tab"], select:not(:disabled),
+label:has(> input[type="checkbox"]), summary { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+
+/* Rounded display face for marketing headlines (covers Bangla and Latin). */
+.font-display { font-family: "Baloo Da 2", "Hind Siliguri", "Inter", sans-serif; }
+.landing { font-family: "Hind Siliguri", "Inter", ui-sans-serif, system-ui, sans-serif; scroll-behavior: smooth; }
+html:has(.landing) { scroll-behavior: smooth; }
+
 /* Numeric inputs: no spinners, tabular digits everywhere numbers line up. */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }

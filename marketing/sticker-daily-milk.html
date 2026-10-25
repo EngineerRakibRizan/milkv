@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<title>Aura Dairy &amp; Agro — Daily Milk Sticker (12 × 8 in)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  /* ===== Print spec: 12in wide × 8in high, full bleed, keep text 0.4in from edges ===== */
+  @page { size: 12in 8in; margin: 0; }
+  :root {
+    --green-900: #0b2e1b; --green-800: #12432a; --green-700: #166534; --green-500: #22c55e;
+    --cream: #fffaf0; --milk: #ffffff; --gold: #f2b632; --ink: #10261a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 12in; height: 8in; }
+  body { font-family: "Hind Siliguri", sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .sheet { position: relative; width: 12in; height: 8in; overflow: hidden;
+    background: radial-gradient(120% 90% at 85% 15%, #1f7a45 0%, var(--green-800) 45%, var(--green-900) 100%); }
+
+  /* subtle leaf pattern */
+  .pattern { position: absolute; inset: 0; opacity: .07;
+    background-image: radial-gradient(circle at 10px 10px, #fff 1.5px, transparent 2px); background-size: 0.32in 0.32in; }
+
+  /* cream milk panel with a poured, wavy edge */
+  .milk { position: absolute; left: 0; top: 0; width: 7.2in; height: 8in; }
+
+  .content { position: absolute; left: 0.55in; top: 0.5in; width: 6.3in; height: 7in; display: flex; flex-direction: column; }
+
+  .brand { display: flex; align-items: center; gap: 0.16in; }
+  .brand .mark { width: 0.78in; height: 0.78in; }
+  .brand .en { font-family: Poppins, sans-serif; font-weight: 800; font-size: 0.34in; letter-spacing: .01in; color: var(--green-800); line-height: 1; }
+  .brand .bn { font-family: "Hind Siliguri"; font-weight: 600; font-size: 0.19in; color: var(--green-700); margin-top: 0.04in; }
+
+  .kicker { margin-top: 0.42in; display: inline-flex; align-self: flex-start; align-items: center; gap: .08in;
+    background: var(--green-700); color: #fff; font-weight: 600; font-size: 0.2in; padding: 0.05in 0.18in; border-radius: 1in; }
+  .kicker i { width: .1in; height: .1in; border-radius: 50%; background: var(--gold); display: inline-block; }
+
+  h1 { font-family: "Baloo Da 2", sans-serif; font-weight: 800; color: var(--green-900); line-height: 1.02; margin-top: 0.14in; }
+  h1 .l1 { display: block; font-size: 0.66in; white-space: nowrap; }
+  h1 .l2 { display: block; font-size: 0.9in; color: var(--green-700); white-space: nowrap; }
+  .sub { font-size: 0.29in; font-weight: 500; color: #2c4a38; margin-top: 0.06in; }
+
+  .features { margin-top: 0.3in; display: grid; grid-template-columns: 1fr 1fr; gap: 0.14in 0.2in; }
+  .feat { display: flex; align-items: center; gap: 0.12in; font-size: 0.215in; font-weight: 600; color: var(--green-900); }
+  .feat .ic { flex: none; width: 0.46in; height: 0.46in; border-radius: 0.14in; background: #e7f5ea; display: grid; place-items: center; }
+  .feat svg { width: 0.27in; height: 0.27in; }
+
+  .cta { margin-top: auto; display: flex; align-items: center; gap: 0.22in;
+    background: var(--green-900); color: #fff; border-radius: 0.24in; padding: 0.2in 0.3in; box-shadow: 0 0.06in 0 rgba(0,0,0,.12); }
+  .cta .phone-ic { flex: none; width: 0.78in; height: 0.78in; border-radius: 50%; background: var(--gold); display: grid; place-items: center; }
+  .cta .phone-ic svg { width: 0.42in; height: 0.42in; }
+  .cta .label { font-size: 0.22in; font-weight: 500; opacity: .9; }
+  .cta .number { white-space: nowrap; font-family: Poppins, sans-serif; font-weight: 800; font-size: 0.52in; line-height: 1.05; letter-spacing: .005in; }
+  .cta .number small { display: block; font-size: 0.24in; font-weight: 600; opacity: .85; letter-spacing: 0; }
+
+  /* right side illustration */
+  .art { position: absolute; right: 0; top: 0; width: 5.2in; height: 8in; }
+
+  .stamp { position: absolute; right: 0.55in; top: 0.5in; width: 1.7in; height: 1.7in; border-radius: 50%;
+    background: var(--gold); color: var(--green-900); display: grid; place-items: center; text-align: center;
+    font-family: "Baloo Da 2"; font-weight: 800; line-height: 1.05; transform: rotate(-10deg);
+    box-shadow: 0 0 0 0.07in var(--green-800), 0 0 0 0.1in var(--gold); }
+  .stamp .big { font-size: 0.4in; } .stamp .small { font-size: 0.2in; }
+
+  .footer-note { position: absolute; right: 0.55in; bottom: 0.42in; text-align: right; color: #d7efdd; font-size: 0.2in; font-weight: 500; }
+  .footer-note b { color: #fff; font-weight: 700; }
+</style>
+</head>
+<body>
+<script>
+  /* ===== EDIT THESE BEFORE PRINTING ===== */
+  window.AURA = {
+    phone: '01XXX-XXXXXX',          // main order number
+    phone2: '01XXX-XXXXXX',         // second number / WhatsApp
+    area: 'আপনার এলাকার নাম',        // delivery area shown at the bottom
+    facebook: 'fb.com/auradairy',
+  }
+</script>
+
+<div class="sheet">
+  <div class="pattern"></div>
+
+  <!-- Cream milk panel with poured wavy edge and drips -->
+  <svg class="milk" viewBox="0 0 720 800" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="cream" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#fff6e3"/></linearGradient>
+    </defs>
+    <path fill="url(#cream)" d="M0 0 H640 C700 60 650 120 690 190 C730 260 660 320 700 400 C735 470 670 540 700 610 C725 670 690 740 650 800 H0 Z"/>
+  </svg>
+
+  <div class="content">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="16" fill="#166534"/>
+        <path d="M17 41c0-10 6.5-18 15-18s15 8 15 18" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+        <path d="M32 23V12M26 15l6-4 6 4" fill="none" stroke="#f2b632" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="32" cy="44" r="5" fill="#f2b632"/>
+      </svg>
+      <div>
+        <div class="en">AURA DAIRY &amp; AGRO</div>
+        <div class="bn">অরা ডেইরি অ্যান্ড অ্যাগ্রো</div>
+      </div>
+    </div>
+
+    <span class="kicker"><i></i>নিজস্ব খামার থেকে সরাসরি</span>
+
+    <h1><span class="l1">প্রতিদিন চাই</span><span class="l2">খাঁটি গরুর দুধ?</span></h1>
+    <p class="sub">ভোরের তাজা দুধ — প্রতিদিন সকালে আপনার দরজায়।</p>
+
+    <div class="features">
+      <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7s6 6.3 6 11a6 6 0 0 1-12 0c0-4.7 6-11 6-11z"/></svg></span>ভেজালমুক্ত খাঁটি দুধ</div>
+      <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg></span>প্রতিদিন হোম ডেলিভারি</div>
+      <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg></span>সুস্থ গাভী, নিয়মিত পরিচর্যা</div>
+      <div class="feat"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg></span>মাসিক বিল · বিকাশ / নগদ</div>
+    </div>
+
+    <div class="cta">
+      <span class="phone-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#0b2e1b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span>
+      <div>
+        <div class="label">দৈনিক দুধ নিতে এখনই কল করুন</div>
+        <div class="number"><span data-f="phone"></span><small>WhatsApp: <span data-f="phone2"></span></small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Illustration: green hills, sun, milk bottle and glass -->
+  <svg class="art" viewBox="0 0 520 800" aria-hidden="true">
+    <defs>
+      <linearGradient id="glassG" x1="0" x2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eef3ef"/></linearGradient>
+      <linearGradient id="bottleG" x1="0" x2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".55" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe9e2"/></linearGradient>
+    </defs>
+    <circle cx="380" cy="300" r="120" fill="#f2b632" opacity=".18"/>
+    <circle cx="380" cy="300" r="80" fill="#f2b632" opacity=".28"/>
+    <path d="M0 610 C110 540 220 560 300 590 C380 620 450 580 520 545 V800 H0Z" fill="#1f7a45"/>
+    <path d="M0 680 C120 630 260 660 360 690 C430 710 480 690 520 670 V800 H0Z" fill="#22c55e" opacity=".55"/>
+    <!-- bottle -->
+    <g transform="translate(222 205) scale(.9)">
+      <ellipse cx="80" cy="452" rx="105" ry="16" fill="#000" opacity=".18"/>
+      <rect x="52" y="0" width="56" height="34" rx="8" fill="#f2b632"/>
+      <rect x="48" y="28" width="64" height="12" rx="5" fill="#d99a16"/>
+      <path d="M58 40 h44 v40 c0 18 52 40 52 90 v250 a30 30 0 0 1 -30 30 h-88 a30 30 0 0 1 -30 -30 v-250 c0 -50 52 -72 52 -90z" fill="url(#bottleG)" stroke="#cfe0d4" stroke-width="3"/>
+      <rect x="18" y="220" width="124" height="140" rx="12" fill="#166534"/>
+      <text x="80" y="268" text-anchor="middle" font-family="Poppins" font-weight="800" font-size="30" fill="#fff">AURA</text>
+      <text x="80" y="300" text-anchor="middle" font-family="Hind Siliguri" font-weight="700" font-size="24" fill="#f2b632">খাঁটি দুধ</text>
+      <text x="80" y="336" text-anchor="middle" font-family="Poppins" font-weight="600" font-size="14" fill="#cfe8d6" letter-spacing="2">FRESH MILK</text>
+      <path d="M30 120 c10 -20 30 -34 40 -40" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none" opacity=".9"/>
+    </g>
+    <!-- glass -->
+    <g transform="translate(92 420) scale(.9)">
+      <ellipse cx="62" cy="246" rx="70" ry="12" fill="#000" opacity=".18"/>
+      <path d="M8 0 h108 l-12 232 a14 14 0 0 1 -14 13 h-56 a14 14 0 0 1 -14 -13z" fill="url(#glassG)" stroke="#d5e3d9" stroke-width="3"/>
+      <path d="M14 34 C40 22 80 46 110 30" stroke="#fff" stroke-width="6" fill="none"/>
+      <path d="M22 60 v150" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+    </g>
+    <!-- droplets -->
+    <path d="M150 400 c0 -14 12 -26 12 -26 s12 12 12 26 a12 12 0 0 1 -24 0z" fill="#fff"/>
+    <path d="M118 360 c0 -9 8 -17 8 -17 s8 8 8 17 a8 8 0 0 1 -16 0z" fill="#fff" opacity=".85"/>
+  </svg>
+
+  <div class="stamp"><div><div class="small">প্রতিদিন সকালে</div><div class="big">বাসায়</div><div class="small">পৌঁছে যায়</div></div></div>
+
+  <div class="footer-note">ডেলিভারি এলাকা: <b data-f="area"></b><br/><span data-f="facebook"></span></div>
+</div>
+
+<script>
+  for (const el of document.querySelectorAll('[data-f]')) el.textContent = window.AURA[el.dataset.f]
+</script>
+</body>
+</html>

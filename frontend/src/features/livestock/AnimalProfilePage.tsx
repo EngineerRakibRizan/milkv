@@ -2,7 +2,7 @@ import { lazy, Suspense, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft, Archive, Pencil, Scale, CalendarPlus, Tag } from 'lucide-react'
+import { ArrowLeft, Archive, ArchiveRestore, Pencil, Scale, CalendarPlus, Tag } from 'lucide-react'
 import { get } from '@/lib/api'
 import { useAuth } from '@/lib/auth'
 import { useApiMutation } from '@/hooks/useApiMutation'
@@ -39,6 +39,7 @@ export default function AnimalProfilePage() {
   const [dialog, setDialog] = useState<'edit' | 'weight' | 'event' | 'status' | 'archive' | null>(null)
   const q = useQuery({ queryKey: ['animals', 'profile', id], queryFn: () => get<Profile>(`/animals/${id}`) })
   const archive = useApiMutation({ method: 'delete', url: `/animals/${id}`, invalidate: [['animals']], success: t('livestock.archived', 'Archived'), onSuccess: () => setDialog(null) })
+  const restore = useApiMutation({ url: `/animals/${id}/restore`, invalidate: [['animals']], success: t('livestock.restored', 'Restored to the herd') })
 
   if (q.error) return <ErrorState error={q.error} retry={() => q.refetch()} />
   if (!q.data) return <div className="space-y-3"><Skeleton className="h-10 w-64" /><Skeleton className="h-40" /><Skeleton className="h-64" /></div>
@@ -70,6 +71,9 @@ export default function AnimalProfilePage() {
             <button className="btn-secondary" onClick={() => setDialog('status')}><Tag className="h-4 w-4" />{t('livestock.sellEtc', 'Sell / death')}</button>
             {can('animals.archive') && <button className="btn-ghost" onClick={() => setDialog('archive')} title={t('common.archive')}><Archive className="h-4 w-4" /></button>}
           </div>
+        )}
+        {a.archived && can('animals.archive') && (
+          <button className="btn-primary" disabled={restore.isPending} onClick={() => restore.mutate(undefined)}><ArchiveRestore className="h-4 w-4" />{t('livestock.restore', 'Restore')}</button>
         )}
       </div>
 

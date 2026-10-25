@@ -27,7 +27,7 @@ class ReconciliationTest extends TestCase
     public function test_demo_farm_books_reconcile(): void
     {
         $this->seed(DatabaseSeeder::class);
-        $farm = Farm::where('name', 'like', 'Green Valley%')->firstOrFail();
+        $farm = Farm::where('name', 'like', 'Aura Dairy%')->firstOrFail();
         app(CurrentFarm::class)->set($farm, 'owner');
         $bal = fn (string $key) => (int) JournalLine::join('accounts', 'accounts.id', '=', 'journal_lines.account_id')
             ->where('accounts.key', $key)->selectRaw('COALESCE(SUM(debit) - SUM(credit), 0) as v')->value('v');
@@ -59,7 +59,13 @@ class ReconciliationTest extends TestCase
         // Dashboard numbers come from the same ledger as the reports.
         app(CurrentFarm::class)->clear();
         $this->actingAsMember(User::where('email', 'owner@farmos.test')->first(), $farm);
+        // Use a serializing cache like production; the second call is served from cache.
+        config(['cache.default' => 'file']);
+        \Illuminate\Support\Facades\Cache::flush();
+        $this->getJson('/api/dashboard')->assertOk();
         $dash = $this->getJson('/api/dashboard')->assertOk();
+        $this->assertStringNotContainsString('__PHP_Incomplete_Class', $dash->getContent());
+        $this->assertIsInt($dash->json('deliveries_today.delivered') ?? 0);
         $pnl = $this->getJson('/api/reports/pnl?from='.now()->startOfMonth()->toDateString())->assertOk();
         $this->assertSame($pnl->json('net_profit'), $dash->json('finance.month_profit'));
         $this->assertSame($this->getJson('/api/reports/receivables')->json('total'), $dash->json('finance.receivables'));

@@ -13,7 +13,7 @@ return [
         'owner' => ['*'],
         'manager' => [
             'dashboard.view', 'animals.*', 'flocks.*', 'inventory.*', 'vet.*', 'milk.*', 'deliveries.*',
-            'customers.*', 'payments.create', 'invoices.view', 'invoices.create', 'suppliers.*', 'bills.*',
+            'customers.*', 'leads.*', 'payments.create', 'invoices.view', 'invoices.create', 'suppliers.*', 'bills.*',
             'employees.view', 'tasks.*', 'notifications.*', 'reports.operational',
         ],
         'vet' => ['dashboard.view', 'animals.view', 'flocks.view', 'vet.*', 'tasks.view', 'tasks.update', 'notifications.view'],

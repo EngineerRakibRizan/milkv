@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 import {
   Bell, Bird, Boxes, ChartColumn, ClipboardList, CloudOff, Droplets, HeartPulse, LayoutDashboard, LogOut, Menu, Moon,
-  Plus, Receipt, Settings, ShoppingCart, Sun, Truck, Users, UserCog, Wallet, X, Building2, Search,
+  Plus, Receipt, Settings, ShoppingCart, Sun, Truck, Users, UserCog, Wallet, X, Building2, Search, Inbox,
 } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
 import { get } from '@/lib/api'
@@ -28,6 +28,7 @@ const NAV: Array<{ group: string; items: NavItem[] }> = [
     { to: '/milk', label: 'nav.milk', icon: Droplets, ability: 'milk.view' },
     { to: '/deliveries', label: 'nav.deliveries', icon: Truck, ability: 'deliveries.view' },
     { to: '/customers', label: 'nav.customers', icon: Users, ability: 'customers.view' },
+    { to: '/leads', label: 'nav.leads', icon: Inbox, ability: 'leads.view' },
   ] },
   { group: 'nav.finance', items: [
     { to: '/income', label: 'nav.income', icon: Wallet, ability: 'invoices.view' },
@@ -99,7 +100,7 @@ export function AppShell() {
 
   const sidebar = (
     <nav className="flex h-full flex-col">
-      <div className="flex h-14 items-center gap-2.5 px-4">
+      <div className="flex h-16 items-center gap-2.5 px-4">
         <img src="/favicon.svg" alt="" className="h-8 w-8" />
         <div className="min-w-0">
           <p className="text-sm font-semibold leading-tight">FarmOS</p>
@@ -151,14 +152,14 @@ export function AppShell() {
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-line bg-surface/90 px-3 backdrop-blur sm:px-5">
-          <button className="btn-ghost p-2 lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu"><Menu className="h-5 w-5" /></button>
+        <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-2 border-b border-line bg-surface/90 px-3 backdrop-blur sm:px-5">
+          <button className="btn-ghost h-10 w-10 p-0 lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu"><Menu className="h-5 w-5" /></button>
           <form className="relative hidden max-w-sm flex-1 md:block" onSubmit={(e) => {
             e.preventDefault()
             if (search.trim()) navigate(`/search?q=${encodeURIComponent(search.trim())}`)
           }}>
-            <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-muted" />
-            <input className="input pl-9" placeholder={t('common.search')} value={search} onChange={(e) => setSearch(e.target.value)} />
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+            <input className="input h-10 py-0 pl-9 leading-10" placeholder={t('common.search')} value={search} onChange={(e) => setSearch(e.target.value)} />
           </form>
           <div className="ml-auto flex items-center gap-1 sm:gap-2">
             {(!online || queued > 0) && (
@@ -170,21 +171,21 @@ export function AppShell() {
             {farms.length > 1 && (
               <label className="hidden items-center gap-1 sm:flex">
                 <Building2 className="h-4 w-4 text-muted" />
-                <select className="input py-1.5" value={farm?.id} onChange={(e) => switchFarm(Number(e.target.value))}>
+                <select className="input h-10 py-0" value={farm?.id} onChange={(e) => switchFarm(Number(e.target.value))}>
                   {farms.map((f) => <option key={f.id} value={f.id}>{f.name}</option>)}
                 </select>
               </label>
             )}
-            <button className="btn-ghost px-2 py-1.5 text-xs font-semibold" onClick={() => i18n.changeLanguage(i18n.language === 'bn' ? 'en' : 'bn')} title={t('common.language')}>
+            <button className="btn-ghost h-10 min-w-10 px-2 py-0 text-xs font-semibold" onClick={() => i18n.changeLanguage(i18n.language === 'bn' ? 'en' : 'bn')} title={t('common.language')}>
               {i18n.language === 'bn' ? 'EN' : 'বাং'}
             </button>
-            <button className="btn-ghost p-2" onClick={() => setDark(!dark)} title={t('common.darkMode')} aria-label={t('common.darkMode')}>
+            <button className="btn-ghost h-10 w-10 p-0" onClick={() => setDark(!dark)} title={t('common.darkMode')} aria-label={t('common.darkMode')}>
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
             {can('notifications.view') && (
-              <NavLink to="/notifications" className="btn-ghost relative p-2" aria-label={t('nav.notifications')}>
+              <NavLink to="/notifications" className="btn-ghost relative h-10 w-10 p-0" aria-label={t('nav.notifications')}>
                 <Bell className="h-4 w-4" />
-                {!!unread.data?.unread && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-600" />}
+                {!!unread.data?.unread && <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-600 ring-2 ring-surface" />}
               </NavLink>
             )}
             <QuickAdd trigger={<><Plus className="h-4 w-4" /><span className="hidden sm:inline">{t('common.quickAdd')}</span></>} />

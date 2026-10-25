@@ -5,16 +5,21 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\FarmController;
 use App\Http\Controllers\Api\InventoryController;
+use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\LivestockController;
 use App\Http\Controllers\Api\MilkController;
 use App\Http\Controllers\Api\PoultryController;
+use App\Http\Controllers\Api\PublicController;
 use App\Http\Controllers\Api\PurchasingController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\SalesController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\VetController;
-use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
+
+// Public landing page: farm profile + enquiry form (no login).
+Route::get('public/farms/{farm}', [PublicController::class, 'farm'])->whereNumber('farm')->middleware('throttle:60,1');
+Route::post('public/farms/{farm}/leads', [PublicController::class, 'storeLead'])->whereNumber('farm')->middleware('throttle:leads');
 
 Route::middleware('throttle:auth')->group(function () {
     Route::post('auth/register', [AuthController::class, 'register']);
@@ -112,6 +117,10 @@ Route::middleware(['auth:sanctum', 'throttle:api', 'idempotent'])->group(functio
         Route::get('tasks', [TeamController::class, 'tasks']);
         Route::post('tasks', [TeamController::class, 'storeTask']);
         Route::patch('tasks/{task}', [TeamController::class, 'updateTask']);
+        Route::get('leads', [LeadController::class, 'index']);
+        Route::patch('leads/{lead}', [LeadController::class, 'update']);
+        Route::post('leads/{lead}/convert', [LeadController::class, 'toCustomer']);
+
         Route::get('notifications', [TeamController::class, 'notifications']);
         Route::post('notifications/read', [TeamController::class, 'readNotifications']);
 

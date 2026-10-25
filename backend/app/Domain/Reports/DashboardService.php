@@ -35,7 +35,11 @@ final class DashboardService
         $today = CarbonImmutable::now($farm->timezone)->toDateString();
         $key = sprintf('dash:%d:%s:%s:%d', $farm->id, FarmChanges::version($farm->id), $today, (int) $finance);
 
-        return Cache::remember($key, now()->addMinutes(10), fn () => $this->compute($today, $finance));
+        // Cache plain arrays only: the cache refuses to unserialize objects
+        // (config cache.serializable_classes = false), so Collections/models
+        // would come back as __PHP_Incomplete_Class on the next hit.
+        return Cache::remember($key, now()->addMinutes(10),
+            fn () => json_decode(json_encode($this->compute($today, $finance)), true));
     }
 
     private function compute(string $today, bool $finance): array

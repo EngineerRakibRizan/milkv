@@ -1,4 +1,4 @@
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useAuth } from './lib/auth'
 import { AppShell } from './components/layout/AppShell'
@@ -26,6 +26,10 @@ const Tasks = lazy(() => import('./features/team/TasksPage'))
 const Notifications = lazy(() => import('./features/team/NotificationsPage'))
 const Settings = lazy(() => import('./features/settings/SettingsPage'))
 const Search = lazy(() => import('./features/search/SearchPage'))
+const Leads = lazy(() => import('./features/leads/LeadsPage'))
+const Landing = lazy(() => import('./features/landing/LandingPage'))
+
+const PageLoading = <div className="flex h-full items-center justify-center"><Spinner className="h-6 w-6 text-brand-700" /></div>
 
 export default function App() {
   const { user, ready } = useAuth()
@@ -33,9 +37,14 @@ export default function App() {
   if (!ready) {
     return <div className="flex h-full items-center justify-center"><Spinner className="h-6 w-6 text-brand-700" /></div>
   }
+  // The public landing page: the site root for visitors, /order for everyone.
+  const landing = <Suspense fallback={PageLoading}><Landing /></Suspense>
+
   if (!user) {
     return (
       <Routes>
+        <Route path="/" element={landing} />
+        <Route path="/order" element={landing} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
@@ -44,6 +53,7 @@ export default function App() {
   }
   return (
     <Routes>
+      <Route path="order" element={landing} />
       <Route element={<AppShell />}>
         <Route index element={<Dashboard />} />
         <Route path="livestock" element={<Animals />} />
@@ -65,6 +75,7 @@ export default function App() {
         <Route path="notifications" element={<Notifications />} />
         <Route path="settings" element={<Settings />} />
         <Route path="search" element={<Search />} />
+        <Route path="leads" element={<Leads />} />
         <Route path="login" element={<Navigate to="/" replace />} />
         <Route path="register" element={<Navigate to="/" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -23,7 +23,9 @@ export default function AnimalsPage() {
   const [page, setPage] = useState(1)
   const [adding, setAdding] = useState(false)
   const q = useDebounced(search)
-  const params = { status, type, health, search: q, page }
+  const params = status === 'archived'
+    ? { archived: 1, status: 'all', type, health, search: q, page }
+    : { status, type, health, search: q, page }
 
   const list = useQuery({
     queryKey: ['animals', params],
@@ -49,7 +51,8 @@ export default function AnimalsPage() {
       </>} />
       <Tabs value={status} onChange={(v) => { setStatus(v); setPage(1) }} tabs={[
         { value: 'active', label: t('status.active', 'Active') }, { value: 'sold', label: t('status.sold', 'Sold') },
-        { value: 'deceased', label: t('status.deceased', 'Deceased') }, { value: 'all', label: t('common.all') }]} />
+        { value: 'deceased', label: t('status.deceased', 'Deceased') }, { value: 'all', label: t('common.all') },
+        { value: 'archived', label: t('common.archived', 'Archived') }]} />
       <Card>
         <div className="flex flex-wrap gap-2 border-b border-line p-3">
           <SearchInput value={search} onChange={(v) => { setSearch(v); setPage(1) }} placeholder={t('livestock.search', 'Tag, name or breed…')} />
