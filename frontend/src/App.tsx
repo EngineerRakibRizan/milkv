@@ -27,6 +27,7 @@ const Notifications = lazy(() => import('./features/team/NotificationsPage'))
 const Settings = lazy(() => import('./features/settings/SettingsPage'))
 const Search = lazy(() => import('./features/search/SearchPage'))
 const Leads = lazy(() => import('./features/leads/LeadsPage'))
+const Account = lazy(() => import('./features/account/AccountPage'))
 const Landing = lazy(() => import('./features/landing/LandingPage'))
 
 const PageLoading = <div className="flex h-full items-center justify-center"><Spinner className="h-6 w-6 text-brand-700" /></div>
@@ -76,6 +77,7 @@ export default function App() {
         <Route path="settings" element={<Settings />} />
         <Route path="search" element={<Search />} />
         <Route path="leads" element={<Leads />} />
+        <Route path="account" element={<Account />} />
         <Route path="login" element={<Navigate to="/" replace />} />
         <Route path="register" element={<Navigate to="/" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />

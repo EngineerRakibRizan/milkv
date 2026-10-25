@@ -127,11 +127,13 @@ export function AppShell() {
       </div>
       <div className="border-t border-line p-3">
         <div className="flex items-center gap-2.5 px-1">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-800">{user?.name?.[0]}</div>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium">{user?.name}</p>
-            <p className="truncate text-xs text-muted">{t(`roles.${farm?.role}`)}</p>
-          </div>
+          <NavLink to="/account" title={t('account.title')} className="-m-1 flex min-w-0 flex-1 items-center gap-2.5 rounded-lg p-1 hover:bg-canvas">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-800">{user?.name?.[0]}</div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium">{user?.name}</p>
+              <p className="truncate text-xs text-muted">{user?.email}</p>
+            </div>
+          </NavLink>
           <button className="btn-ghost p-1.5" onClick={logout} title={t('common.logout')} aria-label={t('common.logout')}><LogOut className="h-4 w-4" /></button>
         </div>
       </div>

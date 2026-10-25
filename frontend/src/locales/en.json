@@ -789,5 +789,17 @@
     "noAutoYet": "No server backup yet — download one now and keep it safe.",
     "manage": "Backup & restore",
     "downloadFull": "Download full backup"
+  },
+  "account": {
+    "title": "My account",
+    "profile": "Name & email",
+    "saved": "Account updated",
+    "currentPassword": "Current password",
+    "confirmEmail": "Needed to change your login email.",
+    "changePassword": "Change password",
+    "newPassword": "New password",
+    "repeatPassword": "Repeat new password",
+    "passwordHint": "At least 8 characters. Other devices will be signed out.",
+    "passwordChanged": "Password changed"
   }
 }

@@ -54,6 +54,34 @@ class AuthController extends Controller
         return $this->session($r->user());
     }
 
+    /**
+     * Update your own name, email or password. Changing email or password needs
+     * the current password; a new password signs out every other device.
+     */
+    public function updateMe(Request $r)
+    {
+        $user = $r->user();
+        $d = $r->validate([
+            'name' => 'sometimes|required|string|max:120',
+            'email' => ['sometimes', 'required', 'email', 'max:190', \Illuminate\Validation\Rule::unique('users', 'email')->ignore($user->id)],
+            'password' => ['nullable', 'confirmed', Password::min(8)],
+            'current_password' => 'required_with:password|nullable|string',
+        ]);
+        $sensitive = (isset($d['email']) && strcasecmp($d['email'], $user->email) !== 0) || ! empty($d['password']);
+        if ($sensitive && ! Hash::check((string) ($d['current_password'] ?? ''), $user->password)) {
+            throw ValidationException::withMessages(['current_password' => 'Your current password is not correct.']);
+        }
+
+        $user->fill(array_filter(['name' => $d['name'] ?? null, 'email' => $d['email'] ?? null], fn ($v) => $v !== null));
+        if (! empty($d['password'])) {
+            $user->password = $d['password'];
+            $user->tokens()->where('id', '!=', $user->currentAccessToken()?->id)->delete();
+        }
+        $user->save();
+
+        return $this->session($user->fresh());
+    }
+
     public function logout(Request $r)
     {
         $r->user()->currentAccessToken()?->delete();

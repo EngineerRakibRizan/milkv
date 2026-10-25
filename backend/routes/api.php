@@ -29,6 +29,7 @@ Route::middleware('throttle:auth')->group(function () {
 
 Route::middleware(['auth:sanctum', 'throttle:api', 'idempotent'])->group(function () {
     Route::get('auth/me', [AuthController::class, 'me']);
+    Route::put('auth/me', [AuthController::class, 'updateMe'])->middleware('throttle:auth');
     Route::post('auth/logout', [AuthController::class, 'logout']);
 
     // Everything below is tenant-scoped by the X-Farm-Id header.
