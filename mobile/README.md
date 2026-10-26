@@ -167,10 +167,24 @@ Bump `version:` in `pubspec.yaml` (`1.0.1+2` = version name + build number) for 
 
 ## iOS
 
-iOS builds need macOS with Xcode; they cannot be produced on this Windows PC
-and have not been built or run yet. The `ios/` project is generated and
-configured (bundle id `com.auradairy.app`, display name "Aura Dairy", icons),
-so either of these works once there is an Apple Developer account (USD 99/year):
+iOS builds need macOS with Xcode, so they are made on GitHub's macOS runners.
+
+**Test install without a developer account (GitHub Actions + Sideloadly).**
+`.github/workflows/ios.yml` builds an unsigned `AuraDairy.ipa` on every push
+to the `mobile-app` branch (or *Actions → iOS build → Run workflow*).
+
+1. On GitHub open *Actions → iOS build*, pick the latest green run and
+   download the `AuraDairy-ios` artifact (a zip containing `AuraDairy.ipa`).
+2. On Windows install iTunes (Apple's website version, not the Store one) and
+   [Sideloadly](https://sideloadly.io). Plug in the iPhone and tap *Trust*.
+3. Drag `AuraDairy.ipa` into Sideloadly, enter your Apple ID, press *Start*.
+4. On the iPhone: *Settings → General → VPN & Device Management* → trust your
+   Apple ID. On iOS 16+ also turn on *Settings → Privacy & Security →
+   Developer Mode* (the phone restarts).
+
+With a free Apple ID the app stops opening after 7 days; install it again with
+Sideloadly (data is kept). For a permanent install and TestFlight for staff,
+use a paid Apple Developer account (USD 99/year) with one of these:
 
 **Codemagic (no Mac needed).** Connect the repository at codemagic.io, pick the
 `mobile/` folder as the Flutter project, add the App Store Connect API key in

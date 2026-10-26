@@ -1,0 +1,44 @@
+# Builds the Flutter app (mobile/) for iPhone on a GitHub macOS runner.
+# Output: an unsigned AuraDairy.ipa artifact. Sign and install it with your
+# own Apple ID (e.g. Sideloadly on Windows) — see mobile/README.md → iOS.
+name: iOS build
+
+on:
+  push:
+    branches: [mobile-app]
+    paths: ['mobile/**', '.github/workflows/ios.yml']
+  workflow_dispatch:
+
+jobs:
+  ipa:
+    runs-on: macos-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.8
+          cache: true
+
+      - run: flutter pub get
+      - run: flutter test
+
+      # No Apple signing here: the IPA is signed on install with the user's Apple ID.
+      - run: flutter build ios --release --no-codesign
+
+      - name: Package IPA
+        run: |
+          mkdir -p build/ipa/Payload
+          cp -R build/ios/iphoneos/Runner.app build/ipa/Payload/
+          cd build/ipa && zip -qr AuraDairy.ipa Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AuraDairy-ios
+          path: mobile/build/ipa/AuraDairy.ipa
+          retention-days: 14
