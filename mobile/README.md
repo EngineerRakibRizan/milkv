@@ -1,10 +1,21 @@
 # Aura Dairy — mobile staff app (Flutter)
 
 Native Android and iOS client for the FarmOS API in [`../backend`](../backend). It
-covers the daily jobs of farm staff: dashboard, the milk sheet, the delivery
-route, customers and payments, website leads, tasks and notifications. The
-public landing page and the back-office screens (livestock, inventory,
-finance, reports, settings) stay on the web app at https://auradairy.com.
+covers:
+
+- **Daily work:** dashboard, the milk sheet, the delivery route, customers and
+  payments, website leads, tasks and notifications.
+- **Operations (More):** Feed & Inventory (stock, low-stock, movements, feed
+  used, stock count, items, purchases) and Veterinary (treatments with
+  prescribed medication, vaccinations, upcoming due dates).
+- **Finance (More):** Income (sales, invoices, money received, record sale,
+  void), Expenses (bills, pay, void, new expense/purchase/asset), Suppliers
+  (dues, bills, payments, pay, add/edit) and Accounting & Reports (profit &
+  loss with ledger drill-down, cash flow, customer and supplier dues, profit
+  by business area and per cow/flock, milk and feed).
+
+Still only on the web app: livestock and poultry records, employees and
+salaries, settings, backups and the public landing page.
 
 - **Offline-first.** Every screen opens instantly from the last saved response,
   then refreshes from the server. Writes made without a connection are kept on
@@ -123,6 +134,7 @@ flutter test
 - `test/core/query_cache_test.dart` — saved-copy-then-fresh, offline fallback, scoping; formatting.
 - `test/widget/login_test.dart` — sign-in, secure token storage, role-aware navigation.
 - `test/widget/milk_sheet_test.dart` — entry, save payload, offline queue and replay.
+- `test/widget/modules_test.dart` — stock list, feed use (online and queued), expense form rules, P&L with ledger drill-down, role-filtered More menu.
 
 ## Build a release for Android
 

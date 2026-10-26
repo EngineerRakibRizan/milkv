@@ -6,6 +6,12 @@ import '../../core/config.dart';
 import '../../core/providers.dart';
 import '../../core/theme.dart';
 import '../customers/customers_screen.dart';
+import '../finance/expenses_screen.dart';
+import '../finance/income_screen.dart';
+import '../finance/suppliers_screen.dart';
+import '../inventory/inventory_screen.dart';
+import '../reports/reports_screen.dart';
+import '../vet/vet_screen.dart';
 import '../leads/leads_screen.dart';
 import '../notifications/notifications_screen.dart';
 import '../tasks/tasks_screen.dart';
@@ -40,6 +46,14 @@ class MoreScreen extends ConsumerWidget {
     if (ok == true) await ref.read(authProvider.notifier).logout();
   }
 
+  Widget _heading(BuildContext context, String text) => Padding(
+        padding: const EdgeInsets.fromLTRB(8, 16, 8, 6),
+        child: Text(text.toUpperCase(),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, letterSpacing: 0.6, color: Theme.of(context).colorScheme.onSurfaceVariant)),
+      );
+
+  Widget _group(List<Widget> items) => Card(clipBehavior: Clip.antiAlias, child: Column(children: items));
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tr = ref.watch(trProvider);
@@ -59,6 +73,19 @@ class MoreScreen extends ConsumerWidget {
           onTap: onTap,
         );
 
+    // Same sections and abilities as the web app's sidebar.
+    final operations = [
+      if (auth.can('inventory.view')) item(Icons.inventory_2_outlined, tr.t('nav.inventory'), () => push(const InventoryScreen())),
+      if (auth.can('vet.view')) item(Icons.monitor_heart_outlined, tr.t('nav.vet'), () => push(const VetScreen())),
+    ];
+    final finance = [
+      if (auth.can('invoices.view')) item(Icons.account_balance_wallet_outlined, tr.t('nav.income'), () => push(const IncomeScreen())),
+      if (auth.can('bills.view')) item(Icons.receipt_long_outlined, tr.t('nav.expenses'), () => push(const ExpensesScreen())),
+      if (auth.can('suppliers.view')) item(Icons.shopping_cart_outlined, tr.t('nav.suppliers'), () => push(const SuppliersScreen())),
+      if (auth.can('reports.operational') || auth.can('reports.finance'))
+        item(Icons.bar_chart_rounded, tr.t('nav.reports'), () => push(const ReportsScreen())),
+    ];
+
     return Scaffold(
       appBar: AppBar(title: Text(tr.t('m.more', fallback: 'More'))),
       body: ListView(padding: const EdgeInsets.fromLTRB(12, 0, 12, 24), children: [
@@ -76,6 +103,8 @@ class MoreScreen extends ConsumerWidget {
             isThreeLine: true,
           ),
         ),
+        if (operations.isNotEmpty) ...[_heading(context, tr.t('nav.operations')), _group(operations)],
+        if (finance.isNotEmpty) ...[_heading(context, tr.t('nav.finance')), _group(finance)],
         const SizedBox(height: 8),
         Card(
           clipBehavior: Clip.antiAlias,

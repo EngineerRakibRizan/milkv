@@ -19,6 +19,8 @@
     "retry": "Try again",
     "savedCopy": "Offline — showing data saved {{when}}",
     "sync": "Sync",
-    "syncNow": "Sync now"
+    "syncNow": "Sync now",
+    "lastMonth": "Last month",
+    "custom": "Choose dates"
   }
 }
